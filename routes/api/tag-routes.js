@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const { Tag, Product, ProductTag } = require('../../models');
+const { Tag, Product, ProductTag, Category } = require('../../models');
+const { sequelize } = require('../../models/Product');
 
 // The `/api/tags` endpoint
 
@@ -7,14 +8,16 @@ router.get('/', (req, res) => {
   // find all tags
   // be sure to include its associated Product data
   Tag.findAll({
+    attributes: [
+      'id',
+      'tag_name'
+    ],
+
     include: [
       {
-        model: ProductTag,
-        attributes: ['id', 'product_id', 'tag_id'],
-        include: {
-          model: Product,
-          attributes: ['product_id']
-        }
+        model: Product,
+        through: ProductTag,
+        attributes: ['id']
       }
     ]
 
@@ -34,20 +37,17 @@ router.get('/:id', (req, res) => {
     },
     include: [
       {
-        model: ProductTag,
-        attributes: ['id', 'product_id', 'tag_id'],
-        include: {
-          model: Product,
-          attributes: ['product_id']
-        }
+        model: Product,
+        through: ProductTag,
+        attributes: ['id']
       }
     ]
 
   }).then(data => {
     if (!data) {
-    res.status(404).json({ message: 'No tag found with this id' });
-    return;
-  }
+      res.status(404).json({ message: 'No tag found with this id' });
+      return;
+    }
     res.json(data);
   })
     .catch(err => {

@@ -25,12 +25,7 @@ router.get('/:id', (req, res) => {
     where: {
       id: req.params.id
     },
-    include: [
-      {
-        model: Product,
-        attributes: 'category_id'
-      }
-    ]
+    include: [ Product ]
   }).then(data => {
     if (!data) {
       res.status(404).json({ message: 'No category found with this id' });
@@ -57,9 +52,9 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
-  Category.update({
+  Category.update(req.body, {
     where: {
-      id: req.body.id
+      id: req.params.id
     }
   }).then(data => {
     if (!data[0]) {
