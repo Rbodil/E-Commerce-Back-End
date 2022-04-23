@@ -22,8 +22,9 @@
 
   ## Usage
   
+  Checkout the video tutorial playlist at the link below:
+  https://www.youtube.com/playlist?list=PLS80mcFj5_-023Cg12gA0BX-9ky_ECS8P
   
-
   ## Contributing
 
   No contributions are allowed
